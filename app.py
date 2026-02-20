@@ -57,9 +57,7 @@ if uploaded_file is not None:
     )
 
     
-    option = st.selectbox(
-    "Select Beam Type",
-    ["Tissue Beam", "Asha Beam"])
+    
     if option == "Tissue Beam":
         df_ts=df1[['Date','Beam no','Set no','WO','SAP Beam Mtr']]
         df_ts.dropna(how='all',inplace=True)
@@ -78,7 +76,7 @@ if uploaded_file is not None:
 
     st.divider()
    
-    #bn = st.selectbox("Select Beam no", beam_list)
+    bn = st.selectbox("Select Beam no", beam_list)
 
     if option == "Tissue Beam":
         df_bn = df_ts[df_ts['Beam no'] == bn]
