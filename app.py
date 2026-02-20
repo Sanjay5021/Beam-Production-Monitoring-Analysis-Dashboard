@@ -84,12 +84,4 @@ if uploaded_file is not None:
     st.subheader("📌 Selected Beam Details")
     st.dataframe(df_bn, use_container_width=True)
 
-    # ---------------- METRICS ----------------
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.metric("Total Entries", len(df_bn))
-
-    with col2:
-        if 'SAP Beam Mtr' in df_bn.columns:
-            st.metric("Total SAP Beam Mtr", round(df_bn['SAP Beam Mtr'].sum(), 2))
+   
