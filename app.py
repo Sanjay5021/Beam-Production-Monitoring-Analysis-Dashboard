@@ -10,13 +10,13 @@ if uploaded_file is not None:
     df1=pd.read_excel(uploaded_file,sheet_name='Sizing')
     #latest_row = df1.iloc[-1]
     #latest_beam_no = latest_row["Beam no"]
-    #df1['Date'] = pd.to_datetime(df1['Date'], errors='coerce')
+    df1['Date'] = pd.to_datetime(df1['Date'], errors='coerce').dt.date
     #latest_date = df1['Date'].max()
     #formatted_date = latest_date.strftime("%d-%m-%Y") 
     df2=pd.read_excel(uploaded_file,sheet_name='Sectional')
     #latest_row = df2.iloc[-1]
     #latest_beam_no = latest_row["Beam no"]
-    #df2['Date'] = pd.to_datetime(df2['Date'], errors='coerce')
+    df2['Date'] = pd.to_datetime(df2['Date'], errors='coerce').dt.date
     #latest_date = df2['Date'].max()
     #formatted_date = latest_date.strftime("%d-%m-%Y")
 
