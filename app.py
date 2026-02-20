@@ -1,55 +1,95 @@
 import streamlit as st
 import pandas as pd
 
-st.markdown(f"# Beam stock details  \n📅")
+# ---------------- PAGE CONFIG ----------------
+st.set_page_config(
+    page_title="Beam Stock Dashboard",
+    page_icon="📊",
+    layout="wide"
+)
 
+# ---------------- CUSTOM STYLE ----------------
+st.markdown("""
+    <style>
+        .main-title {
+            font-size:40px !important;
+            font-weight:700;
+            color:#1f77b4;
+        }
+        .sub-text {
+            font-size:18px;
+            color:gray;
+        }
+        .stDataFrame {
+            border-radius: 10px;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
-uploaded_file = st.file_uploader("Upload your Excel file", type=["xlsx"])
+# ---------------- HEADER ----------------
+st.markdown('<p class="main-title">📊 Beam Stock Details Dashboard</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-text">Upload your production Excel file and analyze beam data interactively.</p>', unsafe_allow_html=True)
+
+st.divider()
+
+# ---------------- FILE UPLOAD ----------------
+uploaded_file = st.file_uploader("📂 Upload your Excel file", type=["xlsx"])
 
 if uploaded_file is not None:
-    df1=pd.read_excel(uploaded_file,sheet_name='Sizing')
-    #latest_row = df1.iloc[-1]
-    #latest_beam_no = latest_row["Beam no"]
-    df1['Date'] = pd.to_datetime(df1['Date'], errors='coerce').dt.date
-    #latest_date = df1['Date'].max()
-    #formatted_date = latest_date.strftime("%d-%m-%Y") 
-    df2=pd.read_excel(uploaded_file,sheet_name='Sectional')
-    #latest_row = df2.iloc[-1]
-    #latest_beam_no = latest_row["Beam no"]
-    df2['Date'] = pd.to_datetime(df2['Date'], errors='coerce').dt.date
-    #latest_date = df2['Date'].max()
-    #formatted_date = latest_date.strftime("%d-%m-%Y")
 
-    
-    option = st.selectbox(
-    "Select Beam Type",
-    ["Tissue Beam", "Asha Beam"])
+    df1 = pd.read_excel(uploaded_file, sheet_name='Sizing')
+    df1['Date'] = pd.to_datetime(df1['Date'], errors='coerce').dt.date
+
+    df2 = pd.read_excel(uploaded_file, sheet_name='Sectional')
+    df2['Date'] = pd.to_datetime(df2['Date'], errors='coerce').dt.date
+
+    # ---------------- SIDEBAR ----------------
+    st.sidebar.header("🔎 Filter Options")
+    option = st.sidebar.selectbox(
+        "Select Beam Type",
+        ["Tissue Beam", "Asha Beam"]
+    )
+
+    # ---------------- MAIN DISPLAY ----------------
     if option == "Tissue Beam":
-        df_ts=df1[['Date','Beam no','Set no','WO','SAP Beam Mtr']]
-        df_ts.dropna(how='all',inplace=True)
+        df_ts = df1[['Date','Beam no','Set no','WO','SAP Beam Mtr']]
+        df_ts.dropna(how='all', inplace=True)
         df_ts.ffill(inplace=True)
-        st.subheader(f"Tissue Beams")
-        st.dataframe(df_ts)
+
+        st.subheader("🧵 Tissue Beams Data")
+        st.dataframe(df_ts, use_container_width=True)
+
         beam_list = df_ts['Beam no'].unique()
+
     else:
-        df_asha=df2[['Date','Beam no','Set no','Work order','SAP Beam Mtr']]
-        df_asha.dropna(how='all',inplace=True)
+        df_asha = df2[['Date','Beam no','Set no','Work order','SAP Beam Mtr']]
+        df_asha.dropna(how='all', inplace=True)
         df_asha.ffill(inplace=True)
-        st.subheader(f"Asha Beams")
-        st.dataframe(df_asha)
+
+        st.subheader("🧶 Asha Beams Data")
+        st.dataframe(df_asha, use_container_width=True)
+
         beam_list = df_asha['Beam no'].unique()
 
+    st.divider()
 
-   
-    bn = st.selectbox("Select Beam no", beam_list)
+    # ---------------- BEAM SELECTION ----------------
+    bn = st.selectbox("🎯 Select Beam No", beam_list)
 
     if option == "Tissue Beam":
         df_bn = df_ts[df_ts['Beam no'] == bn]
-        st.dataframe(df_bn)
     else:
         df_bn = df_asha[df_asha['Beam no'] == bn]
-        st.dataframe(df_bn)
 
+    st.subheader("📌 Selected Beam Details")
+    st.dataframe(df_bn, use_container_width=True)
 
+    # ---------------- METRICS ----------------
+    col1, col2 = st.columns(2)
 
+    with col1:
+        st.metric("Total Entries", len(df_bn))
 
+    with col2:
+        if 'SAP Beam Mtr' in df_bn.columns:
+            st.metric("Total SAP Beam Mtr", round(df_bn['SAP Beam Mtr'].sum(), 2))
