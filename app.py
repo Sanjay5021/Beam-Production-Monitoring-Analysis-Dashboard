@@ -29,7 +29,7 @@ st.markdown("""
 
 
 
-st.markdown('<p class="main-title">📊 Beam Stock Details Dashboard</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-title">📊 Sanjay Beam Stock Details Dashboard</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-text">Upload your production Excel file and analyze beam data interactively.</p>', unsafe_allow_html=True)
 
 st.divider()
@@ -84,6 +84,7 @@ if uploaded_file is not None:
     else:
         df_bn = df_asha[df_asha['Beam no'] == bn]
         st.dataframe(df_bn)
+
 
 
 
