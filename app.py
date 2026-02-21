@@ -4,7 +4,7 @@ import pandas as pd
 
 
 st.set_page_config(
-    page_title="Beam Stock Details",
+    page_title="Sanjay's Beam stock report ",
     page_icon="📊",
     layout="wide"
 )
@@ -84,6 +84,7 @@ if uploaded_file is not None:
     else:
         df_bn = df_asha[df_asha['Beam no'] == bn]
         st.dataframe(df_bn)
+
 
 
 
