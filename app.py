@@ -4,7 +4,7 @@ import pandas as pd
 
 
 st.set_page_config(
-    page_title="Sanjay's Beam stock report ",
+    page_title="Beam Stock Dashboard",
     page_icon="📊",
     layout="wide"
 )
@@ -29,7 +29,7 @@ st.markdown("""
 
 
 
-st.markdown('<p class="main-title">📊 Sanjay Beam Stock Details Dashboard</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-title">📊 Beam Stock Details Dashboard</p>', unsafe_allow_html=True)
 st.markdown('<p class="sub-text">Upload your production Excel file and analyze beam data interactively.</p>', unsafe_allow_html=True)
 
 st.divider()
@@ -59,7 +59,7 @@ if uploaded_file is not None:
     
     
     if option == "Tissue Beam":
-        df_ts=df1[['Date','Beam no','Set no','WO','SAP Beam Mtr']]
+        df_ts=df1[['Date','Beam no','Set no','WO','Beam mtr As per Fabric']]
         df_ts.dropna(how='all',inplace=True)
         df_ts = df_ts[df_ts['Beam no'].notna()]
         df_ts.ffill(inplace=True)
@@ -67,7 +67,7 @@ if uploaded_file is not None:
         st.dataframe(df_ts)
         beam_list = df_ts['Beam no'].unique()
     else:
-        df_asha=df2[['Date','Beam no','Set no','Work order','SAP Beam Mtr']]
+        df_asha=df2[['Date','Beam no','Set no','Work order','Beam mtr As per Fabric']]
         df_asha.dropna(how='all',inplace=True)
         df_asha.ffill(inplace=True)
         st.subheader(f"Asha Beams")
@@ -84,9 +84,6 @@ if uploaded_file is not None:
     else:
         df_bn = df_asha[df_asha['Beam no'] == bn]
         st.dataframe(df_bn)
-
-
-
 
 
 
