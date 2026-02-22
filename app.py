@@ -67,7 +67,7 @@ if uploaded_file is not None:
         st.dataframe(df_ts)
         beam_list = df_ts['Beam no'].unique()
     else:
-        df_asha=df2[['Date','Beam no','Set no','Work order','Beam mtr As per Fabric']]
+        df_asha=df2[['Date','Beam no','Set no','Work order','SAP Beam Mtr']]
         df_asha.dropna(how='all',inplace=True)
         df_asha.ffill(inplace=True)
         st.subheader(f"Asha Beams")
@@ -84,6 +84,7 @@ if uploaded_file is not None:
     else:
         df_bn = df_asha[df_asha['Beam no'] == bn]
         st.dataframe(df_bn)
+
 
 
 
